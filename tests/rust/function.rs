@@ -1,5 +1,3 @@
-use super::*;
-
 /// Standalone function call without arguments
 #[test]
 fn test_simple_function_call() {

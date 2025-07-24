@@ -1,5 +1,3 @@
-use super::*;
-
 /// Identifiers with underscores, digits, or camel case should be valid
 #[test]
 fn test_basic_identifiers() {

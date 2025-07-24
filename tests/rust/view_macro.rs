@@ -1,5 +1,3 @@
-use super::*;
-
 #[test]
 fn test_full_view_macro() {
     let code = r#"#[component]

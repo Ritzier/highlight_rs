@@ -1,5 +1,3 @@
-use super::*;
-
 #[test]
 fn struct_with_lifetime() {
     let code = r#"struct Holder<'a, T> {

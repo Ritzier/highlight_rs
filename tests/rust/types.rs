@@ -1,5 +1,3 @@
-use super::*;
-
 #[test]
 fn test_keywords() {
     let code = [

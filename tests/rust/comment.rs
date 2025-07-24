@@ -1,5 +1,3 @@
-use super::*;
-
 /// Single-line (`// ...`) and block (`/* ... */`) comments
 #[test]
 fn test_rust_comments() {

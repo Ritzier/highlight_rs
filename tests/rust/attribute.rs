@@ -1,5 +1,3 @@
-use super::*;
-
 /// Single-line outer attribute
 #[test]
 fn test_rust_attributes_simple() {

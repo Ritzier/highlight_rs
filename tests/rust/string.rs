@@ -1,5 +1,3 @@
-use super::*;
-
 #[test]
 fn test_rust_strings() {
     let code = r#""hello world" 'c'"#;

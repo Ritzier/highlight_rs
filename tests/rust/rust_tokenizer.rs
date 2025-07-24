@@ -1,4 +1,4 @@
-use super::*;
+use highlight_rs::*;
 
 #[test]
 fn test_lt() {

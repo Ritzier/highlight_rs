@@ -1,23 +1,5 @@
-mod attribute;
-mod comment;
-mod function;
-mod generic;
-mod html;
-mod identifier;
-mod keywords;
-mod lifetime_and_generic;
-mod macros;
-mod number;
-mod operator;
-mod punctation;
-mod rust_tokenizer;
-mod string;
-mod types;
-mod view_macro;
-
 use highlight_rs::*;
 
-#[macro_export]
 macro_rules! assert_tokens {
     ($code:expr, [ $( Token { content: $content:expr, token_type: $token_type:ident } ),* $(,)? ]) => {{
         let actual = $crate::RustTokenizer::tokenize($code);
@@ -36,7 +18,7 @@ macro_rules! assert_tokens {
     }};
 }
 
-#[macro_export]
+#[allow(unused_macros)]
 macro_rules! assert_fail {
     ($code:expr) => {{
         let actual = $crate::RustTokenizer::tokenize($code);
@@ -44,7 +26,6 @@ macro_rules! assert_fail {
     }};
 }
 
-#[macro_export]
 macro_rules! assert_tokens_skip_whitespace {
     (
         $code:expr,
@@ -69,7 +50,7 @@ macro_rules! assert_tokens_skip_whitespace {
     }};
 }
 
-#[macro_export]
+#[allow(unused_macros)]
 macro_rules! assert_fail_skip_whitespace {
     ($code:expr) => {{
         let actual = $crate::RustTokenizer::tokenize($code)
@@ -79,3 +60,20 @@ macro_rules! assert_fail_skip_whitespace {
         assert_eq!(actual, []);
     }};
 }
+
+mod attribute;
+mod comment;
+mod function;
+mod generic;
+mod html;
+mod identifier;
+mod keywords;
+mod lifetime_and_generic;
+mod macros;
+mod number;
+mod operator;
+mod punctation;
+mod rust_tokenizer;
+mod string;
+mod types;
+mod view_macro;

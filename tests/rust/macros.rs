@@ -1,5 +1,3 @@
-use super::*;
-
 /// Verifies Rust macro invocation tokenization.
 #[test]
 fn test_rust_macros() {

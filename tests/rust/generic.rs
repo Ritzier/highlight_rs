@@ -1,5 +1,3 @@
-use super::*;
-
 #[test]
 fn test_struct_turbo_fish() {
     let code = "Vec::<String>::new()";

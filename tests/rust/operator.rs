@@ -1,5 +1,3 @@
-use super::*;
-
 /// Tests the tokenization of Rust's range and range-inclusive operators,
 #[test]
 fn test_range_operators() {

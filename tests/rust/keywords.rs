@@ -1,5 +1,3 @@
-use super::*;
-
 /// Many keywords and identifier in keyword-like position
 #[test]
 fn test_common_rust_keywords() {

@@ -1,5 +1,3 @@
-use super::*;
-
 #[test]
 fn test_rust_punctuation() {
     let code = "()[]{};,.";
