@@ -3,12 +3,6 @@ use std::sync::LazyLock;
 
 use super::*;
 
-macro_rules! rg {
-    ($re:expr) => {
-        LazyLock::new(|| Regex::new($re).unwrap())
-    };
-}
-
 // --- Comments ---
 static COMMENT_LINE: LazyLock<Regex> = rg!(r"//.*");
 static COMMENT_BLOCK: LazyLock<Regex> = rg!(r"/\*[\s\S]*?\*/");

@@ -10,10 +10,14 @@ fn test_unsupported_languge() {
 #[test]
 fn test_supported_languge() {
     let supported_language = [
+        // Rust
         ("rust", Language::Rust),
         ("RUST", Language::Rust),
         ("rs", Language::Rust),
         ("RS", Language::Rust),
+        // Css
+        ("css", Language::Css),
+        ("CSS", Language::Css),
     ];
     for (lang, language) in supported_language {
         let result = Language::from(lang);

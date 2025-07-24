@@ -1,17 +1,27 @@
+macro_rules! rg {
+    ($re:expr) => {
+        LazyLock::new(|| Regex::new($re).unwrap())
+    };
+}
+
 mod rust;
 pub use rust::*;
+mod css;
+pub use css::*;
 
 use super::{Error, Result, Token, TokenType};
 
 #[derive(Debug, PartialEq)]
 pub enum Language {
     Rust,
+    Css,
 }
 
 impl Language {
     pub fn from(lang: &str) -> Result<Self> {
         match lang.to_lowercase().as_str() {
             "rust" | "rs" => Ok(Self::Rust),
+            "css" => Ok(Self::Css),
             _ => Err(Error::Unsupported(lang.to_string())),
         }
     }
@@ -19,6 +29,7 @@ impl Language {
     pub fn tokenize(&self, input: &str) -> Vec<Token> {
         match self {
             Self::Rust => RustTokenizer::tokenize(input),
+            Self::Css => CssTokenizer::tokenize(input),
         }
     }
 

@@ -7,6 +7,6 @@ mod token;
 mod utils;
 
 pub use errors::Error;
-pub use language::{Language, RustTokenizer};
+pub use language::*;
 pub use token::{Token, TokenType};
 pub use utils::{highlight, html_escape};
