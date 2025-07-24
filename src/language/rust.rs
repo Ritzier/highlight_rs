@@ -1,253 +1,26 @@
 use regex::Regex;
-use std::sync::LazyLock;
 
-use super::*;
-
-// --- Comments ---
-static COMMENT_LINE: LazyLock<Regex> = rg!(r"//.*");
-static COMMENT_BLOCK: LazyLock<Regex> = rg!(r"/\*[\s\S]*?\*/");
-
-// --- Lifetimes ---
-static LIFETIME: LazyLock<Regex> = rg!(r"'(_|[a-zA-Z][a-zA-Z0-9_]*)\b");
-static LIFETIME_REF: LazyLock<Regex> = rg!(r"&'(_|[a-zA-Z][a-zA-Z0-9_]*)\b");
-
-//  --- String ---
-static STRING_DOUBLE: LazyLock<Regex> = rg!(r#""([^"\\]|\\.)*""#);
-
-// --- Char ---
-static CHAR_LITERAL: LazyLock<Regex> =
-    rg!(r"'([^'\\]|\\[nrt0'\\]|\\x[0-9a-fA-F]{2}|\\u\{[0-9a-fA-F]{1,6}\})'");
-
-// --- Number ---
-static NUMBER_WITH_SUFFIX: LazyLock<Regex> =
-    rg!(r"\b\d[\d_]*([eE][+-]?\d+)?(_?[a-zA-Z][a-zA-Z0-9]*)?\b");
-static NUMBER_FLOAT: LazyLock<Regex> = rg!(
-    r"\b((\d[\d_]*\.\d[\d_]*|\d[\d_]*\.|\.\d[\d_]*)([eE][+-]?\d[\d_]*)?(_?[a-zA-Z][a-zA-Z0-9]*)?)\b"
-);
-
-static NUMBER_HEX: LazyLock<Regex> = rg!(r"\b0[xX][0-9a-fA-F]+\b");
-static NUMBER_OCTAL: LazyLock<Regex> = rg!(r"\b0[oO][0-7]+\b");
-static NUMBER_BINARY: LazyLock<Regex> = rg!(r"\b0[bB][01]+\b");
-
-// --- Attributes ---
-static ATTRIBUTE: LazyLock<Regex> = rg!(r"#!?\[[\s\S]*?\]");
-
-// --- Macro ---
-static MACRO_CALL: LazyLock<Regex> = rg!(r"\b\w+!");
-
-// --- Function calls ---
-static FUNCTION_CALL: LazyLock<Regex> = rg!(r"\b[a-zA-Z_][a-zA-Z0-9_]*\s*(::\s*<.*?>)?\s*\(");
-
-// --- Operator ---
-
-// Triple
-static OP_ADD_ASSIGN: LazyLock<Regex> = rg!(r"\+=");
-static OP_SUB_ASSIGN: LazyLock<Regex> = rg!(r"-=");
-static OP_MUL_ASSIGN: LazyLock<Regex> = rg!(r"\*=");
-static OP_DIV_ASSIGN: LazyLock<Regex> = rg!(r"/=");
-static OP_MOD_ASSIGN: LazyLock<Regex> = rg!(r"%=");
-static OP_XOR_ASSIGN: LazyLock<Regex> = rg!(r"\^=");
-static OP_AND_ASSIGN: LazyLock<Regex> = rg!(r"&=");
-static OP_OR_ASSIGN: LazyLock<Regex> = rg!(r"\|=");
-static OP_SHL_ASSIGN: LazyLock<Regex> = rg!(r"<<=");
-static OP_SHR_ASSIGN: LazyLock<Regex> = rg!(r">>=");
-
-// Double
-static OP_EQ: LazyLock<Regex> = rg!(r"==");
-static OP_NE: LazyLock<Regex> = rg!(r"!=");
-static OP_LE: LazyLock<Regex> = rg!(r"<=");
-static OP_GE: LazyLock<Regex> = rg!(r">=");
-static OP_AND: LazyLock<Regex> = rg!(r"&&");
-static OP_OR: LazyLock<Regex> = rg!(r"\|\|");
-static OP_SHL: LazyLock<Regex> = rg!(r"<<");
-static OP_SHR: LazyLock<Regex> = rg!(r">>");
-static OP_RANGE: LazyLock<Regex> = rg!(r"\.\.");
-static OP_RANGE_INCLUSIVE: LazyLock<Regex> = rg!(r"\.\.=");
-static OP_ARROW: LazyLock<Regex> = rg!(r"=>");
-static OP_THIN_ARROW: LazyLock<Regex> = rg!(r"->");
-static OP_SCOPE: LazyLock<Regex> = rg!(r"::");
-
-// Single
-static OP_ADD: LazyLock<Regex> = rg!(r"\+");
-static OP_SUB: LazyLock<Regex> = rg!(r"-");
-static OP_MUL: LazyLock<Regex> = rg!(r"\*");
-static OP_DIV: LazyLock<Regex> = rg!(r"/");
-static OP_MOD: LazyLock<Regex> = rg!(r"%");
-static OP_XOR: LazyLock<Regex> = rg!(r"\^");
-static OP_BIT_AND: LazyLock<Regex> = rg!(r"&");
-static OP_BIT_OR: LazyLock<Regex> = rg!(r"\|");
-static OP_NOT: LazyLock<Regex> = rg!(r"!");
-static OP_BIT_NOT: LazyLock<Regex> = rg!(r"~");
-static OP_LT: LazyLock<Regex> = rg!(r"<");
-static OP_GT: LazyLock<Regex> = rg!(r">");
-static OP_ASSIGN: LazyLock<Regex> = rg!(r"=");
-static OP_QUESTION: LazyLock<Regex> = rg!(r"\?");
-static PUNCT_DOUBLE_COLON: LazyLock<Regex> = rg!(r"\:");
-
-// --- Punctuation ---
-static PUNCT_LPAREN: LazyLock<Regex> = rg!(r"\(");
-static PUNCT_RPAREN: LazyLock<Regex> = rg!(r"\)");
-static PUNCT_LBRACKET: LazyLock<Regex> = rg!(r"\[");
-static PUNCT_RBRACKET: LazyLock<Regex> = rg!(r"\]");
-static PUNCT_LBRACE: LazyLock<Regex> = rg!(r"\{");
-static PUNCT_RBRACE: LazyLock<Regex> = rg!(r"\}");
-static PUNCT_SEMICOLON: LazyLock<Regex> = rg!(r";");
-static PUNCT_COMMA: LazyLock<Regex> = rg!(r",");
-static PUNCT_DOT: LazyLock<Regex> = rg!(r"\.");
-
-// --- Identifier ---
-static IDENTIFIER: LazyLock<Regex> = rg!(r"\b[a-zA-Z_][a-zA-Z0-9_]*\b");
-static TYPE_IDENTIFIER: LazyLock<Regex> = rg!(r"\b[A-Z][a-zA-Z0-9_]*\b");
-
-// --- Keyword ---
-const RUST_KEYWORDS: &[&str] = &[
-    "as", "async", "await", "break", "const", "continue", "crate", "dyn", "else", "enum", "extern",
-    "false", "fn", "for", "if", "impl", "in", "let", "loop", "match", "mod", "move", "mut", "pub",
-    "ref", "return", "self", "Self", "static", "struct", "super", "trait", "true", "type", "union",
-    "unsafe", "use", "where", "while", "yield",
-];
-
-// --- Type ---
-const RUST_TYPES: &[&str] = &[
-    "i8", "i16", "i32", "i64", "i128", "isize", "u8", "u16", "u32", "u64", "u128", "usize", "f32",
-    "f64", "bool", "char", "str",
-];
-
-// --- HTML ---
-static HTML_OPEN_TAG: LazyLock<Regex> = rg!(
-    r#"<[a-zA-Z][a-zA-Z0-9\-]*(\s+[a-zA-Z_:][-a-zA-Z0-9_:.]*(\s*=\s*(".*?"|'.*?'|[^\s"'>=]+))?)*\s*?>"#
-);
-static HTML_CLOSE_TAG: LazyLock<Regex> = rg!(r"</[a-zA-Z][a-zA-Z0-9\-]*\s*>");
-static HTML_SELF_CLOSE_TAG: LazyLock<Regex> = rg!(
-    r#"<[a-zA-Z][a-zA-Z0-9\-]*(\s+[a-zA-Z_:][-a-zA-Z0-9_:.]*(\s*=\s*(".*?"|'.*?'|[^\s"'>=]+))?)*\s*/>"#
-);
-
-static PATTERNS: LazyLock<Vec<(Regex, TokenType)>> = LazyLock::new(|| {
-    let static_patterns = vec![
-        // Comment
-        (COMMENT_LINE.clone(), TokenType::Comment),
-        (COMMENT_BLOCK.clone(), TokenType::Comment),
-        // Char
-        (CHAR_LITERAL.clone(), TokenType::Char),
-        // Lifetime
-        (LIFETIME.clone(), TokenType::Lifetime),
-        (LIFETIME_REF.clone(), TokenType::Lifetime),
-        // String
-        (STRING_DOUBLE.clone(), TokenType::String),
-        // Number
-        (NUMBER_FLOAT.clone(), TokenType::Number),
-        // Number with suffix
-        (NUMBER_WITH_SUFFIX.clone(), TokenType::Number),
-        (NUMBER_HEX.clone(), TokenType::Number),
-        (NUMBER_OCTAL.clone(), TokenType::Number),
-        (NUMBER_BINARY.clone(), TokenType::Number),
-        // Atribute and Macro
-        (ATTRIBUTE.clone(), TokenType::Attribute),
-        (MACRO_CALL.clone(), TokenType::Macro),
-    ];
-
-    // Generate keyword patterns
-    let keyword_patterns = RUST_KEYWORDS.iter().map(|keyword| {
-        (
-            Regex::new(&format!(r"\b{keyword}\b")).unwrap(),
-            TokenType::Keyword,
-        )
-    });
-
-    // Generate type patterns
-    let type_patterns = RUST_TYPES.iter().map(|type_name| {
-        (
-            Regex::new(&format!(r"\b{type_name}\b")).unwrap(),
-            TokenType::Type,
-        )
-    });
-
-    // More static patterns
-    let operator_patterns = vec![
-        (FUNCTION_CALL.clone(), TokenType::Function),
-        // 3-char
-        (OP_SHL_ASSIGN.clone(), TokenType::Operator), // <<=
-        (OP_SHR_ASSIGN.clone(), TokenType::Operator), // >>=
-        (OP_RANGE_INCLUSIVE.clone(), TokenType::Operator), // ..=
-        // 2-char
-        (OP_ADD_ASSIGN.clone(), TokenType::Operator), // +=
-        (OP_SUB_ASSIGN.clone(), TokenType::Operator), // -=
-        (OP_MUL_ASSIGN.clone(), TokenType::Operator), // *=
-        (OP_DIV_ASSIGN.clone(), TokenType::Operator), // /=
-        (OP_MOD_ASSIGN.clone(), TokenType::Operator), // %=
-        (OP_XOR_ASSIGN.clone(), TokenType::Operator), // ^=
-        (OP_AND_ASSIGN.clone(), TokenType::Operator), // &=
-        (OP_OR_ASSIGN.clone(), TokenType::Operator),  // |=
-        (OP_EQ.clone(), TokenType::Operator),         // ==
-        (OP_NE.clone(), TokenType::Operator),         // !=
-        (OP_LE.clone(), TokenType::Operator),         // <=
-        (OP_GE.clone(), TokenType::Operator),         // >=
-        (OP_AND.clone(), TokenType::Operator),        // &&
-        (OP_OR.clone(), TokenType::Operator),         // ||
-        (OP_SHL.clone(), TokenType::Operator),        // <=
-        (OP_SHR.clone(), TokenType::Operator),        // >=
-        (OP_RANGE.clone(), TokenType::Operator),      // ..
-        (OP_ARROW.clone(), TokenType::Operator),      // =>
-        (OP_THIN_ARROW.clone(), TokenType::Operator), // ->
-        (OP_SCOPE.clone(), TokenType::Operator),      // ::
-        // 1-char
-        (OP_ADD.clone(), TokenType::Operator),      // +
-        (OP_SUB.clone(), TokenType::Operator),      // -
-        (OP_MUL.clone(), TokenType::Operator),      // *
-        (OP_DIV.clone(), TokenType::Operator),      // /
-        (OP_MOD.clone(), TokenType::Operator),      // %
-        (OP_XOR.clone(), TokenType::Operator),      // ^
-        (OP_BIT_AND.clone(), TokenType::Operator),  // &
-        (OP_BIT_OR.clone(), TokenType::Operator),   // |
-        (OP_NOT.clone(), TokenType::Operator),      // !
-        (OP_BIT_NOT.clone(), TokenType::Operator),  // ~
-        (OP_LT.clone(), TokenType::Manual),         // <
-        (OP_GT.clone(), TokenType::Manual),         // >
-        (OP_ASSIGN.clone(), TokenType::Operator),   // =
-        (OP_QUESTION.clone(), TokenType::Operator), // ?
-        // Punctation
-        (PUNCT_LPAREN.clone(), TokenType::Punctuation),
-        (PUNCT_RPAREN.clone(), TokenType::Punctuation),
-        (PUNCT_LBRACKET.clone(), TokenType::Punctuation),
-        (PUNCT_RBRACKET.clone(), TokenType::Punctuation),
-        (PUNCT_LBRACE.clone(), TokenType::Punctuation),
-        (PUNCT_RBRACE.clone(), TokenType::Punctuation),
-        (PUNCT_SEMICOLON.clone(), TokenType::Punctuation),
-        (PUNCT_COMMA.clone(), TokenType::Punctuation),
-        (PUNCT_DOT.clone(), TokenType::Punctuation),
-        (TYPE_IDENTIFIER.clone(), TokenType::Type),
-        (IDENTIFIER.clone(), TokenType::Identifier),
-        (PUNCT_DOUBLE_COLON.clone(), TokenType::Punctuation),
-    ];
-
-    // Chain all patterns together
-    static_patterns
-        .into_iter()
-        .chain(keyword_patterns)
-        .chain(type_patterns)
-        .chain(operator_patterns)
-        .collect()
-});
-
-// Util
-static FUNC_NAME: LazyLock<Regex> = rg!(r"([a-zA-Z_][a-zA-Z0-9_]*)");
+mod token;
+pub use token::{RustToken, RustTokenKind};
+mod pattern;
+use pattern::*;
 
 pub struct RustTokenizer {
-    patterns: Vec<(Regex, TokenType)>,
-    view_patterns: Vec<(Regex, TokenType)>,
+    patterns: Vec<(Regex, RustTokenKind)>,
+    view_patterns: Vec<(Regex, RustTokenKind)>,
     pos: usize,
     chars: Vec<char>,
     skip_unrecognized: bool,
 }
 
 impl RustTokenizer {
-    pub fn tokenize(input: &str) -> Vec<Token> {
+    pub fn tokenize(input: &str) -> Vec<RustToken> {
         let mut rust_tokenizer = RustTokenizer::new(input);
 
         rust_tokenizer.tokenize_all()
     }
 
-    fn tokenize_all(&mut self) -> Vec<Token> {
+    fn tokenize_all(&mut self) -> Vec<RustToken> {
         let mut tokens = Vec::new();
 
         while self.pos < self.chars.len() {
@@ -258,7 +31,7 @@ impl RustTokenizer {
                     end += 1;
                 }
                 let content = self.chars[self.pos..end].iter().collect::<String>();
-                tokens.push(Token::new(content, TokenType::Whitespace));
+                tokens.push(RustToken::new(content, RustTokenKind::Whitespace));
                 self.pos = end;
                 continue;
             }
@@ -280,7 +53,7 @@ impl RustTokenizer {
         tokens
     }
 
-    fn tokenize_once(&mut self, content: &str) -> Vec<Token> {
+    fn tokenize_once(&mut self, content: &str) -> Vec<RustToken> {
         let mut tokens = Vec::new();
         let mut found_match = false;
 
@@ -291,10 +64,13 @@ impl RustTokenizer {
                     let end = self.pos + content.chars().count();
 
                     match token_type {
-                        TokenType::Function if content.ends_with('(') => {
+                        RustTokenKind::Function if content.ends_with('(') => {
                             if let Some(mat) = FUNC_NAME.find(&content) {
                                 let func_name = mat.as_str(); // just the function name
-                                tokens.push(Token::new(func_name.to_string(), TokenType::Function));
+                                tokens.push(RustToken::new(
+                                    func_name.to_string(),
+                                    RustTokenKind::Function,
+                                ));
                                 self.pos += func_name.len(); // Advance only by function name's length
                                 found_match = true; // Don't advance by the regex total match length
                                 break; // Go back to main loop, rest is handled by normal tokenization
@@ -302,7 +78,7 @@ impl RustTokenizer {
                         }
 
                         // For condition '<', '>' TokenType
-                        TokenType::Manual => {
+                        RustTokenKind::Manual => {
                             let left_is_whitespace = if self.pos > 0 {
                                 self.chars[self.pos - 1].is_whitespace()
                             } else {
@@ -314,17 +90,18 @@ impl RustTokenizer {
                                 .is_some_and(|c| c.is_whitespace());
 
                             let token_type = if left_is_whitespace && right_is_whitespace {
-                                TokenType::Operator
+                                RustTokenKind::Operator
                             } else {
-                                TokenType::Punctuation
+                                RustTokenKind::Punctuation
                             };
-                            tokens.push(Token::new(self.chars[self.pos].to_string(), token_type));
+                            tokens
+                                .push(RustToken::new(self.chars[self.pos].to_string(), token_type));
                             self.pos += 1;
                             found_match = true;
                             break;
                         }
 
-                        token_type => tokens.push(Token::new(content, *token_type)),
+                        token_type => tokens.push(RustToken::new(content, *token_type)),
                     }
 
                     self.pos = end;
@@ -341,7 +118,7 @@ impl RustTokenizer {
             } else {
                 // Create default token for unrecognized character
                 let content = self.chars[self.pos].to_string();
-                tokens.push(Token::new(content, TokenType::Default));
+                tokens.push(RustToken::new(content, RustTokenKind::Default));
                 self.pos += 1;
             }
         }
@@ -356,14 +133,14 @@ impl RustTokenizer {
         macro_re.is_match(&remain)
     }
 
-    fn tokenize_view_macro(&mut self) -> Vec<Token> {
+    fn tokenize_view_macro(&mut self) -> Vec<RustToken> {
         let mut tokens = Vec::new();
         // Match and step over "view!" and spaces, push as macro
         let remain: String = self.chars[self.pos..].iter().collect();
         let macro_re = Regex::new(r"^view!").unwrap();
 
         if let Some(mat) = macro_re.find(&remain) {
-            tokens.push(Token::new("view!".to_string(), TokenType::Macro));
+            tokens.push(RustToken::new("view!".to_string(), RustTokenKind::Macro));
             self.pos += mat.end();
             // Skip whitespace after "view!"
             while self.pos < self.chars.len() && self.chars[self.pos].is_whitespace() {
@@ -378,7 +155,7 @@ impl RustTokenizer {
         if self.pos >= self.chars.len() || self.chars[self.pos] != '{' {
             return tokens;
         }
-        tokens.push(Token::new("{".to_string(), TokenType::Punctuation));
+        tokens.push(RustToken::new("{".to_string(), RustTokenKind::Punctuation));
         let open_brace = self.pos;
         let block_end =
             find_balanced_brace_block(&self.chars, open_brace).unwrap_or(self.chars.len() - 1);
@@ -394,7 +171,7 @@ impl RustTokenizer {
                     next += 1;
                 }
                 let content = self.chars[view_pos..next].iter().collect::<String>();
-                tokens.push(Token::new(content, TokenType::Whitespace));
+                tokens.push(RustToken::new(content, RustTokenKind::Whitespace));
                 view_pos = next;
                 continue;
             }
@@ -407,7 +184,7 @@ impl RustTokenizer {
                     if mat.start() == 0 {
                         let seg = mat.as_str().to_string();
                         view_pos += seg.chars().count();
-                        tokens.push(Token::new(seg, *ttype));
+                        tokens.push(RustToken::new(seg, *ttype));
                         matched = true;
                         break;
                     }
@@ -427,9 +204,9 @@ impl RustTokenizer {
 
                 // Nothing matched, position + 1
                 if ttoks.is_empty() {
-                    tokens.push(Token::new(
+                    tokens.push(RustToken::new(
                         self.chars[view_pos].to_string(),
-                        TokenType::Default,
+                        RustTokenKind::Default,
                     ));
                     view_pos += 1;
                 // Push and jump to the position
@@ -442,7 +219,7 @@ impl RustTokenizer {
         }
 
         // add closing '}'
-        tokens.push(Token::new("}".to_string(), TokenType::Punctuation));
+        tokens.push(RustToken::new("}".to_string(), RustTokenKind::Punctuation));
         self.pos = block_end + 1;
 
         tokens
@@ -450,9 +227,9 @@ impl RustTokenizer {
 
     fn new(input: &str) -> Self {
         let view_patterns = vec![
-            (HTML_OPEN_TAG.clone(), TokenType::Tag),
-            (HTML_CLOSE_TAG.clone(), TokenType::Tag),
-            (HTML_SELF_CLOSE_TAG.clone(), TokenType::Tag),
+            (HTML_OPEN_TAG.clone(), RustTokenKind::Tag),
+            (HTML_CLOSE_TAG.clone(), RustTokenKind::Tag),
+            (HTML_SELF_CLOSE_TAG.clone(), RustTokenKind::Tag),
         ];
         let chars = input.chars().collect();
 

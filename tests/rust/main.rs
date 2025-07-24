@@ -5,9 +5,9 @@ macro_rules! assert_tokens {
         let actual = $crate::RustTokenizer::tokenize($code);
         let expected = vec![
             $(
-                $crate::Token {
+                $crate::RustToken {
                     content: $content.to_string(),
-                    token_type: $crate::TokenType::$token_type,
+                    kind: $crate::RustTokenKind::$token_type,
                 }
             ),*
         ];
@@ -33,13 +33,13 @@ macro_rules! assert_tokens_skip_whitespace {
     ) => {{
         let actual = $crate::RustTokenizer::tokenize($code)
             .into_iter()
-            .filter(|tok| tok.token_type != $crate::TokenType::Whitespace)
+            .filter(|tok| tok.kind != $crate::RustTokenKind::Whitespace)
             .collect::<Vec<_>>();
         let expected = vec![
             $(
-                $crate::Token {
+                $crate::RustToken {
                     content: $content.to_string(),
-                    token_type: $crate::TokenType::$token_type,
+                    kind: $crate::RustTokenKind::$token_type,
                 }
             ),*
         ];
