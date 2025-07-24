@@ -1,6 +1,6 @@
 use super::*;
 
-pub fn higlight(input: &str, lang: &str) -> String {
+pub fn highlight(input: &str, lang: &str) -> String {
     match Language::from(lang) {
         Ok(lang) => lang.highlight(input),
         Err(_) => html_escape(input),

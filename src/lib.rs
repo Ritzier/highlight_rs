@@ -9,4 +9,4 @@ mod utils;
 pub use errors::Error;
 pub use language::{Language, RustTokenizer};
 pub use token::{Token, TokenType};
-pub use utils::{higlight, html_escape};
+pub use utils::{highlight, html_escape};
