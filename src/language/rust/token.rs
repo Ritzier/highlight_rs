@@ -8,23 +8,23 @@ pub struct RustToken {
 
 #[derive(Debug, PartialEq, Clone, Copy)]
 pub enum RustTokenKind {
-    Comment,
-    Char,
-    Lifetime,
-    String,
-    Number,
     Attribute,
-    Macro,
-    Keyword,
-    Type,
-    Function,
-    Operator,
-    Manual, // For manually handle < > char
-    Punctuation,
-    Identifier,
-    Whitespace,
-    Tag,
+    Char,
+    Comment,
     Default,
+    Function,
+    Identifier,
+    Keyword,
+    Lifetime,
+    Macro,
+    Manual, // For manually handle < > char
+    Number,
+    Operator,
+    Punctuation,
+    String,
+    Tag,
+    Type,
+    Whitespace,
 }
 
 impl RustToken {
@@ -35,20 +35,20 @@ impl RustToken {
         let content = html_escape(&self.content);
 
         let class = match self.kind {
-            RustTokenKind::Keyword => "keyword",
-            RustTokenKind::Identifier => "identifier",
-            RustTokenKind::Number => "number",
-            RustTokenKind::String => "string",
-            RustTokenKind::Char => "char",
-            RustTokenKind::Type => "type",
-            RustTokenKind::Macro => "macro",
-            RustTokenKind::Comment => "comment",
-            RustTokenKind::Lifetime => "lifetime",
-            RustTokenKind::Function => "function",
-            RustTokenKind::Operator => "operator",
             RustTokenKind::Attribute => "attribute",
+            RustTokenKind::Char => "char",
+            RustTokenKind::Comment => "comment",
+            RustTokenKind::Function => "function",
+            RustTokenKind::Identifier => "identifier",
+            RustTokenKind::Keyword => "keyword",
+            RustTokenKind::Lifetime => "lifetime",
+            RustTokenKind::Macro => "macro",
+            RustTokenKind::Number => "number",
+            RustTokenKind::Operator => "operator",
             RustTokenKind::Punctuation => "punctuation",
+            RustTokenKind::String => "string",
             RustTokenKind::Tag => "tag",
+            RustTokenKind::Type => "type",
             RustTokenKind::Default | RustTokenKind::Manual | RustTokenKind::Whitespace => {
                 return content;
             }

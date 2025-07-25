@@ -10,6 +10,7 @@ pub struct CssToken {
 pub enum CssTokenKind {
     AtRules,
     Comment,
+    CustomProperty,
     Default,
     Function,
     Identifier,
@@ -20,15 +21,14 @@ pub enum CssTokenKind {
     Operator,
     Property,
     Punctuation,
+    SelectorClass,
+    SelectorId,
+    SelectorPseudo,
+    SelectorTag,
+    SelectorUniversal,
     String,
     Unit,
     Whitespace,
-    SelectorId,
-    SelectorTag,
-    SelectorClass,
-    SelectorUniversal,
-    SelectorPseudo,
-    CustomProperty,
 }
 
 impl CssToken {
@@ -41,6 +41,7 @@ impl CssToken {
         let class = match self.kind {
             CssTokenKind::AtRules => "keyword",
             CssTokenKind::Comment => "comment",
+            CssTokenKind::CustomProperty => "property",
             CssTokenKind::Function => "function",
             CssTokenKind::Identifier => "identifier",
             CssTokenKind::Keyword => "keyword",
@@ -50,15 +51,14 @@ impl CssToken {
             CssTokenKind::Operator => "operator",
             CssTokenKind::Property => "property",
             CssTokenKind::Punctuation => "punctuation",
+            CssTokenKind::SelectorClass => "selector-class",
+            CssTokenKind::SelectorId => "selector-id",
+            CssTokenKind::SelectorPseudo => "selector-pseudo",
+            CssTokenKind::SelectorTag => "selector-tag",
+            CssTokenKind::SelectorUniversal => "selector-universal",
             CssTokenKind::String => "string",
             CssTokenKind::Unit => "unit",
             CssTokenKind::Whitespace | CssTokenKind::Default => return content,
-            CssTokenKind::SelectorId => "selector-id",
-            CssTokenKind::SelectorTag => "selector-tag",
-            CssTokenKind::SelectorClass => "selector-class",
-            CssTokenKind::SelectorPseudo => "selector-pseudo",
-            CssTokenKind::SelectorUniversal => "selector-universal",
-            CssTokenKind::CustomProperty => "property",
         };
         format!("<span class=\"{PREFIX}{class}\">{content}</span>")
     }
