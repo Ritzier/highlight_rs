@@ -28,6 +28,7 @@ pub enum CssTokenKind {
     SelectorClass,
     SelectorUniversal,
     SelectorPseudo,
+    CustomProperty,
 }
 
 impl CssToken {
@@ -57,6 +58,7 @@ impl CssToken {
             CssTokenKind::SelectorClass => "selector-class",
             CssTokenKind::SelectorPseudo => "selector-pseudo",
             CssTokenKind::SelectorUniversal => "selector-universal",
+            CssTokenKind::CustomProperty => "property",
         };
         format!("<span class=\"{PREFIX}{class}\">{content}</span>")
     }

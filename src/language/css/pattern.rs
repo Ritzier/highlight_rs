@@ -47,9 +47,8 @@ pub static CSS_SELECTOR_ELEM: LazyLock<Regex> = rg!(r"\b[a-zA-Z_][\w\-]*\b");
 pub static CSS_SELECTOR_UNIVERSAL: LazyLock<Regex> = rg!(r"\*");
 
 // --- Properties ---
-pub static CSS_PROPERTY: LazyLock<Regex> = rg!(
-    r"\b([a-zA-Z][a-zA-Z0-9-]*|[*]|[.][a-zA-Z][a-zA-Z0-9-]*|[#][a-zA-Z][a-zA-Z0-9-]*|::[a-zA-Z][a-zA-Z0-9-]*|:[a-zA-Z][a-zA-Z0-9-]*(?:\([^)]*\))?)\b"
-);
+pub static CSS_PROPERTY: LazyLock<Regex> =
+    rg!(r"([a-zA-Z_-][a-zA-Z0-9_-]*|\-\-[a-zA-Z0-9_-]+)\s*:");
 
 // --- Operators and Punctuation ---
 pub static CSS_OPERATOR: LazyLock<Regex> = rg!(r"[+\-*/^~|]");
@@ -73,7 +72,9 @@ pub static PATTERNS: LazyLock<Vec<(Regex, CssTokenKind)>> = LazyLock::new(|| {
         // !important, keywords, custom property
         (CSS_IMPORTANT.clone(), CssTokenKind::Keyword),
         (CSS_KEYWORDS.clone(), CssTokenKind::Keyword),
-        (CSS_CUSTOM_PROPERTY.clone(), CssTokenKind::Property),
+        (CSS_CUSTOM_PROPERTY.clone(), CssTokenKind::CustomProperty),
+        // Properties (should come before generic identifiers!)
+        (CSS_PROPERTY.clone(), CssTokenKind::Property),
         // Selectors (ordered from most to least specific to avoid overlaps)
         (CSS_SELECTOR_ID.clone(), CssTokenKind::SelectorId),
         (CSS_SELECTOR_CLASS.clone(), CssTokenKind::SelectorClass),
@@ -83,8 +84,6 @@ pub static PATTERNS: LazyLock<Vec<(Regex, CssTokenKind)>> = LazyLock::new(|| {
             CssTokenKind::SelectorUniversal,
         ),
         (CSS_SELECTOR_ELEM.clone(), CssTokenKind::SelectorTag),
-        // Properties (should come before generic identifiers!)
-        (CSS_PROPERTY.clone(), CssTokenKind::Property),
         // Numbers/Units
         (CSS_NUMBER_WITH_UNIT.clone(), CssTokenKind::Unit),
         (CSS_NUMBER.clone(), CssTokenKind::Number),

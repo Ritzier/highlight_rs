@@ -31,7 +31,7 @@ fn test_full_css() {
             },
             CssToken {
                 content: "screen",
-                kind: Property
+                kind: SelectorTag
             },
             CssToken {
                 content: " ",
@@ -79,7 +79,7 @@ fn test_full_css() {
             },
             CssToken {
                 content: "body",
-                kind: Property
+                kind: SelectorTag
             },
             CssToken {
                 content: " ",
@@ -119,7 +119,7 @@ fn test_full_css() {
             },
             CssToken {
                 content: "--main-bg",
-                kind: Property
+                kind: CustomProperty
             },
             CssToken {
                 content: ":",
@@ -139,7 +139,7 @@ fn test_full_css() {
             },
             CssToken {
                 content: "to",
-                kind: Property
+                kind: SelectorTag
             },
             CssToken {
                 content: " ",
@@ -147,7 +147,7 @@ fn test_full_css() {
             },
             CssToken {
                 content: "bottom",
-                kind: Property
+                kind: SelectorTag
             },
             CssToken {
                 content: ",",
@@ -309,7 +309,7 @@ fn test_custom_properties_and_vars() {
         [
             CssToken {
                 content: ":root",
-                kind: Selector
+                kind: SelectorPseudo
             },
             CssToken {
                 content: " ",
@@ -325,7 +325,7 @@ fn test_custom_properties_and_vars() {
             },
             CssToken {
                 content: "--primary-color",
-                kind: Property
+                kind: CustomProperty
             },
             CssToken {
                 content: ":",
@@ -350,6 +350,230 @@ fn test_custom_properties_and_vars() {
             CssToken {
                 content: "}",
                 kind: Punctuation
+            }
+        ]
+    )
+}
+
+#[test]
+fn test_custome_properties() {
+    let code = r#"#demo > .notification > div > p, p ~ ul, input [type="radio"] {
+  color: green;
+  width: 80%;
+}
+"#;
+    assert_tokens!(
+        code,
+        [
+            CssToken {
+                content: "#demo",
+                kind: SelectorId
+            },
+            CssToken {
+                content: " ",
+                kind: Whitespace
+            },
+            CssToken {
+                content: ">",
+                kind: Default
+            },
+            CssToken {
+                content: " ",
+                kind: Whitespace
+            },
+            CssToken {
+                content: ".notification",
+                kind: SelectorClass
+            },
+            CssToken {
+                content: " ",
+                kind: Whitespace
+            },
+            CssToken {
+                content: ">",
+                kind: Default
+            },
+            CssToken {
+                content: " ",
+                kind: Whitespace
+            },
+            CssToken {
+                content: "div",
+                kind: SelectorTag
+            },
+            CssToken {
+                content: " ",
+                kind: Whitespace
+            },
+            CssToken {
+                content: ">",
+                kind: Default
+            },
+            CssToken {
+                content: " ",
+                kind: Whitespace
+            },
+            CssToken {
+                content: "p",
+                kind: SelectorTag
+            },
+            CssToken {
+                content: ",",
+                kind: Punctuation
+            },
+            CssToken {
+                content: " ",
+                kind: Whitespace
+            },
+            CssToken {
+                content: "p",
+                kind: SelectorTag
+            },
+            CssToken {
+                content: " ",
+                kind: Whitespace
+            },
+            CssToken {
+                content: "~",
+                kind: Operator
+            },
+            CssToken {
+                content: " ",
+                kind: Whitespace
+            },
+            CssToken {
+                content: "ul",
+                kind: SelectorTag
+            },
+            CssToken {
+                content: ",",
+                kind: Punctuation
+            },
+            CssToken {
+                content: " ",
+                kind: Whitespace
+            },
+            CssToken {
+                content: "input",
+                kind: SelectorTag
+            },
+            CssToken {
+                content: " ",
+                kind: Whitespace
+            },
+            CssToken {
+                content: "[",
+                kind: Default
+            },
+            CssToken {
+                content: "type",
+                kind: SelectorTag
+            },
+            CssToken {
+                content: "=",
+                kind: Default
+            },
+            CssToken {
+                content: "\"radio\"",
+                kind: String
+            },
+            CssToken {
+                content: "]",
+                kind: Default
+            },
+            CssToken {
+                content: " ",
+                kind: Whitespace
+            },
+            CssToken {
+                content: "{",
+                kind: Punctuation
+            },
+            CssToken {
+                content: "\n  ",
+                kind: Whitespace
+            },
+            CssToken {
+                content: "color",
+                kind: Property
+            },
+            CssToken {
+                content: ":",
+                kind: Punctuation
+            },
+            CssToken {
+                content: " ",
+                kind: Whitespace
+            },
+            CssToken {
+                content: "green",
+                kind: SelectorTag
+            },
+            CssToken {
+                content: ";",
+                kind: Punctuation
+            },
+            CssToken {
+                content: "\n  ",
+                kind: Whitespace
+            },
+            CssToken {
+                content: "width",
+                kind: Property
+            },
+            CssToken {
+                content: ":",
+                kind: Punctuation
+            },
+            CssToken {
+                content: " ",
+                kind: Whitespace
+            },
+            CssToken {
+                content: "80",
+                kind: Unit
+            },
+            CssToken {
+                content: "%",
+                kind: Default
+            },
+            CssToken {
+                content: ";",
+                kind: Punctuation
+            },
+            CssToken {
+                content: "\n",
+                kind: Whitespace
+            },
+            CssToken {
+                content: "}",
+                kind: Punctuation
+            },
+            CssToken {
+                content: "\n",
+                kind: Whitespace
+            }
+        ]
+    );
+}
+
+#[test]
+fn test_selectors_with_pseudo_and_class() {
+    let code = "h1.mystyle:lang(en)";
+    assert_tokens!(
+        code,
+        [
+            CssToken {
+                content: "h1",
+                kind: SelectorTag
+            },
+            CssToken {
+                content: ".mystyle",
+                kind: SelectorClass
+            },
+            CssToken {
+                content: ":lang(en)",
+                kind: SelectorPseudo
             }
         ]
     )

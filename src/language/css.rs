@@ -51,6 +51,23 @@ impl CssTokenizer {
                                 }
                             },
 
+                            CssTokenKind::Property => match content.find(':') {
+                                Some(parent_start) => {
+                                    let fname = content[..parent_start].trim_end();
+                                    tokens.push(CssToken::new(
+                                        fname.to_string(),
+                                        CssTokenKind::Property,
+                                    ));
+                                    tokens.push(CssToken::new(
+                                        ":".to_string(),
+                                        CssTokenKind::Punctuation,
+                                    ));
+                                }
+                                None => {
+                                    tokens.push(CssToken::new(content.clone(), *typ));
+                                }
+                            },
+
                             _ => {
                                 tokens.push(CssToken::new(content.clone(), *typ));
                             }
