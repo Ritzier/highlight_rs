@@ -12,6 +12,9 @@ pub static CSS_WHITESPACE: LazyLock<Regex> = rg!(r"\s+");
 // --- At-rules ---
 pub static CSS_AT_RULES: LazyLock<Regex> = rg!(r"@([a-zA-Z_-]+)");
 
+// --- !important ---
+pub static CSS_IMPORTANT: LazyLock<Regex> = rg!(r"!\s*important\b");
+
 // --- Keywords and common special values ---
 pub static CSS_KEYWORDS: LazyLock<Regex> =
     rg!(r"\b(important|inherit|initial|unset|revert|auto|none|normal|transparent|currentColor)\b");
@@ -68,7 +71,7 @@ pub static PATTERNS: LazyLock<Vec<(Regex, CssTokenKind)>> = LazyLock::new(|| {
         (CSS_HEX_COLOR.clone(), CssTokenKind::Literal),
         (CSS_FUNCTION.clone(), CssTokenKind::Function),
         // !important, keywords, custom property
-        // (Regex::new(r"!important\b").unwrap(), TokenType::Keyword),
+        (CSS_IMPORTANT.clone(), CssTokenKind::Keyword),
         (CSS_KEYWORDS.clone(), CssTokenKind::Keyword),
         (CSS_CUSTOM_PROPERTY.clone(), CssTokenKind::Property),
         // Properties (should come before generic identifiers!)
