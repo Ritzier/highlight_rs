@@ -1,13 +1,13 @@
 use highlight_rs::*;
 
 macro_rules! assert_tokens {
-    ($code:expr, [ $( Token { content: $content:expr, token_type: $token_type:ident } ),* $(,)? ]) => {{
+    ($code:expr, [ $( CssToken { content: $content:expr, kind: $kind:ident } ),* $(,)? ]) => {{
         let actual = $crate::CssTokenizer::tokenize($code);
         let expected = vec![
             $(
                 $crate::CssToken {
                     content: $content.to_string(),
-                    kind: $crate::CssTokenKind::$token_type,
+                    kind: $crate::CssTokenKind::$kind,
                 }
             ),*
         ];
@@ -29,7 +29,7 @@ macro_rules! assert_fail {
 macro_rules! assert_tokens_skip_whitespace {
     (
         $code:expr,
-        [ $( Token { content: $content:expr, token_type: $token_type:ident } ),* $(,)? ]
+        [ $( CssToken { content: $content:expr, kind: $kind:ident } ),* $(,)? ]
     ) => {{
         let actual = $crate::CssTokenizer::tokenize($code)
             .into_iter()
@@ -39,7 +39,7 @@ macro_rules! assert_tokens_skip_whitespace {
             $(
                 $crate::CssToken {
                     content: $content.to_string(),
-                    kind: $crate::CssTokenKind::$token_type,
+                    kind: $crate::CssTokenKind::$kind,
                 }
             ),*
         ];

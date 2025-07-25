@@ -4,46 +4,46 @@ fn test_css_keyword() {
     assert_tokens_skip_whitespace!(
         code,
         [
-            Token {
+            CssToken {
                 content: "important",
-                token_type: Keyword
+                kind: Keyword
             },
-            Token {
+            CssToken {
                 content: "inherit",
-                token_type: Keyword
+                kind: Keyword
             },
-            Token {
+            CssToken {
                 content: "initial",
-                token_type: Keyword
+                kind: Keyword
             },
-            Token {
+            CssToken {
                 content: "unset",
-                token_type: Keyword
+                kind: Keyword
             },
-            Token {
+            CssToken {
                 content: "revert",
-                token_type: Keyword
+                kind: Keyword
             },
-            Token {
+            CssToken {
                 content: "auto",
-                token_type: Keyword
+                kind: Keyword
             },
-            Token {
+            CssToken {
                 content: "none",
-                token_type: Keyword
+                kind: Keyword
             },
-            Token {
+            CssToken {
                 content: "normal",
-                token_type: Keyword
+                kind: Keyword
             },
-            Token {
+            CssToken {
                 content: "transparent",
-                token_type: Keyword
+                kind: Keyword
             },
-            Token {
+            CssToken {
                 content: "currentColor",
-                token_type: Keyword
+                kind: Keyword
             }
         ]
-    );
+    )
 }

@@ -13,293 +13,289 @@ fn test_full_css() {
     assert_tokens!(
         code,
         [
-            Token {
+            CssToken {
                 content: "/* comment */",
-                token_type: Comment
+                kind: Comment
             },
-            Token {
+            CssToken {
                 content: "\n",
-                token_type: Whitespace
+                kind: Whitespace
             },
-            Token {
+            CssToken {
                 content: "@media",
-                token_type: Macro
+                kind: AtRules
             },
-            Token {
+            CssToken {
                 content: " ",
-                token_type: Whitespace
+                kind: Whitespace
             },
-            Token {
+            CssToken {
                 content: "screen",
-                token_type: Property
+                kind: Property
             },
-            Token {
+            CssToken {
                 content: " ",
-                token_type: Whitespace
+                kind: Whitespace
             },
-            Token {
+            CssToken {
                 content: "and",
-                token_type: Function
+                kind: Function
             },
-            Token {
+            CssToken {
                 content: "(",
-                token_type: Punctuation
+                kind: Punctuation
             },
-            Token {
+            CssToken {
                 content: "min-width",
-                token_type: Property
+                kind: Property
             },
-            Token {
+            CssToken {
                 content: ":",
-                token_type: Punctuation
+                kind: Punctuation
             },
-            Token {
+            CssToken {
                 content: " ",
-                token_type: Whitespace
+                kind: Whitespace
             },
-            Token {
+            CssToken {
                 content: "600px",
-                token_type: Unit
+                kind: Unit
             },
-            Token {
+            CssToken {
                 content: ")",
-                token_type: Punctuation
+                kind: Punctuation
             },
-            Token {
+            CssToken {
                 content: " ",
-                token_type: Whitespace
+                kind: Whitespace
             },
-            Token {
+            CssToken {
                 content: "{",
-                token_type: Punctuation
+                kind: Punctuation
             },
-            Token {
+            CssToken {
                 content: "\n  ",
-                token_type: Whitespace
+                kind: Whitespace
             },
-            Token {
+            CssToken {
                 content: "body",
-                token_type: Property
+                kind: Property
             },
-            Token {
+            CssToken {
                 content: " ",
-                token_type: Whitespace
+                kind: Whitespace
             },
-            Token {
+            CssToken {
                 content: "{",
-                token_type: Punctuation
+                kind: Punctuation
             },
-            Token {
+            CssToken {
                 content: "\n    ",
-                token_type: Whitespace
+                kind: Whitespace
             },
-            Token {
+            CssToken {
                 content: "color",
-                token_type: Property
+                kind: Property
             },
-            Token {
+            CssToken {
                 content: ":",
-                token_type: Punctuation
+                kind: Punctuation
             },
-            Token {
+            CssToken {
                 content: " ",
-                token_type: Whitespace
+                kind: Whitespace
             },
-            Token {
+            CssToken {
                 content: "#fff",
-                token_type: Literal
+                kind: Literal
             },
-            Token {
+            CssToken {
                 content: ";",
-                token_type: Punctuation
+                kind: Punctuation
             },
-            Token {
+            CssToken {
                 content: "\n    ",
-                token_type: Whitespace
+                kind: Whitespace
             },
-            Token {
+            CssToken {
                 content: "--main-bg",
-                token_type: Property
+                kind: Property
             },
-            Token {
+            CssToken {
                 content: ":",
-                token_type: Punctuation
+                kind: Punctuation
             },
-            Token {
+            CssToken {
                 content: " ",
-                token_type: Whitespace
+                kind: Whitespace
             },
-            Token {
+            CssToken {
                 content: "linear-gradient",
-                token_type: Function
+                kind: Function
             },
-            Token {
+            CssToken {
                 content: "(",
-                token_type: Punctuation
+                kind: Punctuation
             },
-            Token {
+            CssToken {
                 content: "to",
-                token_type: Property
+                kind: Property
             },
-            Token {
+            CssToken {
                 content: " ",
-                token_type: Whitespace
+                kind: Whitespace
             },
-            Token {
+            CssToken {
                 content: "bottom",
-                token_type: Property
+                kind: Property
             },
-            Token {
+            CssToken {
                 content: ",",
-                token_type: Punctuation
+                kind: Punctuation
             },
-            Token {
+            CssToken {
                 content: " ",
-                token_type: Whitespace
+                kind: Whitespace
             },
-            Token {
+            CssToken {
                 content: "#fff",
-                token_type: Literal
+                kind: Literal
             },
-            Token {
+            CssToken {
                 content: ",",
-                token_type: Punctuation
+                kind: Punctuation
             },
-            Token {
+            CssToken {
                 content: " ",
-                token_type: Whitespace
+                kind: Whitespace
             },
-            Token {
+            CssToken {
                 content: "#000",
-                token_type: Literal
+                kind: Literal
             },
-            Token {
+            CssToken {
                 content: ")",
-                token_type: Punctuation
+                kind: Punctuation
             },
-            Token {
+            CssToken {
                 content: ";",
-                token_type: Punctuation
+                kind: Punctuation
             },
-            Token {
+            CssToken {
                 content: "\n    ",
-                token_type: Whitespace
+                kind: Whitespace
             },
-            Token {
+            CssToken {
                 content: "margin",
-                token_type: Property
+                kind: Property
             },
-            Token {
+            CssToken {
                 content: ":",
-                token_type: Punctuation
+                kind: Punctuation
             },
-            Token {
+            CssToken {
                 content: " ",
-                token_type: Whitespace
+                kind: Whitespace
             },
-            Token {
+            CssToken {
                 content: "0",
-                token_type: Unit
+                kind: Unit
             },
-            Token {
+            CssToken {
                 content: " ",
-                token_type: Whitespace
+                kind: Whitespace
             },
-            Token {
+            CssToken {
                 content: "auto",
-                token_type: Keyword
+                kind: Keyword
             },
-            Token {
+            CssToken {
                 content: ";",
-                token_type: Punctuation
+                kind: Punctuation
             },
-            Token {
+            CssToken {
                 content: "\n    ",
-                token_type: Whitespace
+                kind: Whitespace
             },
-            Token {
+            CssToken {
                 content: "font-size",
-                token_type: Property
+                kind: Property
             },
-            Token {
+            CssToken {
                 content: ":",
-                token_type: Punctuation
+                kind: Punctuation
             },
-            Token {
+            CssToken {
                 content: " ",
-                token_type: Whitespace
+                kind: Whitespace
             },
-            Token {
+            CssToken {
                 content: "16px",
-                token_type: Unit
+                kind: Unit
             },
-            Token {
+            CssToken {
                 content: " ",
-                token_type: Whitespace
+                kind: Whitespace
             },
-            Token {
-                content: "!",
-                token_type: Default
+            CssToken {
+                content: "!important",
+                kind: Keyword
             },
-            Token {
-                content: "important",
-                token_type: Keyword
-            },
-            Token {
+            CssToken {
                 content: ";",
-                token_type: Punctuation
+                kind: Punctuation
             },
-            Token {
+            CssToken {
                 content: "\n    ",
-                token_type: Whitespace
+                kind: Whitespace
             },
-            Token {
+            CssToken {
                 content: "background",
-                token_type: Property
+                kind: Property
             },
-            Token {
+            CssToken {
                 content: ":",
-                token_type: Punctuation
+                kind: Punctuation
             },
-            Token {
+            CssToken {
                 content: " ",
-                token_type: Whitespace
+                kind: Whitespace
             },
-            Token {
+            CssToken {
                 content: "url",
-                token_type: Function
+                kind: Function
             },
-            Token {
+            CssToken {
                 content: "(",
-                token_type: Punctuation
+                kind: Punctuation
             },
-            Token {
+            CssToken {
                 content: "\"bg.png\"",
-                token_type: String
+                kind: String
             },
-            Token {
+            CssToken {
                 content: ")",
-                token_type: Punctuation
+                kind: Punctuation
             },
-            Token {
+            CssToken {
                 content: ";",
-                token_type: Punctuation
+                kind: Punctuation
             },
-            Token {
+            CssToken {
                 content: "\n  ",
-                token_type: Whitespace
+                kind: Whitespace
             },
-            Token {
+            CssToken {
                 content: "}",
-                token_type: Punctuation
+                kind: Punctuation
             },
-            Token {
+            CssToken {
                 content: "\n",
-                token_type: Whitespace
+                kind: Whitespace
             },
-            Token {
+            CssToken {
                 content: "}",
-                token_type: Punctuation
+                kind: Punctuation
             }
         ]
     )
@@ -311,50 +307,50 @@ fn test_custom_properties_and_vars() {
     assert_tokens!(
         css,
         [
-            Token {
+            CssToken {
                 content: ":root",
-                token_type: Selector
+                kind: Selector
             },
-            Token {
+            CssToken {
                 content: " ",
-                token_type: Whitespace
+                kind: Whitespace
             },
-            Token {
+            CssToken {
                 content: "{",
-                token_type: Punctuation
+                kind: Punctuation
             },
-            Token {
+            CssToken {
                 content: " ",
-                token_type: Whitespace
+                kind: Whitespace
             },
-            Token {
+            CssToken {
                 content: "--primary-color",
-                token_type: Property
+                kind: Property
             },
-            Token {
+            CssToken {
                 content: ":",
-                token_type: Punctuation
+                kind: Punctuation
             },
-            Token {
+            CssToken {
                 content: " ",
-                token_type: Whitespace
+                kind: Whitespace
             },
-            Token {
+            CssToken {
                 content: "#123456",
-                token_type: Literal
+                kind: Literal
             },
-            Token {
+            CssToken {
                 content: ";",
-                token_type: Punctuation
+                kind: Punctuation
             },
-            Token {
+            CssToken {
                 content: " ",
-                token_type: Whitespace
+                kind: Whitespace
             },
-            Token {
+            CssToken {
                 content: "}",
-                token_type: Punctuation
+                kind: Punctuation
             }
         ]
-    );
+    )
 }

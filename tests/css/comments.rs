@@ -3,9 +3,9 @@ fn test_comments() {
     let code = "/* comments */";
     assert_tokens!(
         code,
-        [Token {
+        [CssToken {
             content: "/* comments */",
-            token_type: Comment
+            kind: Comment
         }]
     );
 }
