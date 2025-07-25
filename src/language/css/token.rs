@@ -8,6 +8,7 @@ pub struct CssToken {
 
 #[derive(Debug, PartialEq, Clone, Copy)]
 pub enum CssTokenKind {
+    AtRules,
     Comment,
     Default,
     Function,
@@ -33,6 +34,7 @@ impl CssToken {
         let content = html_escape(&self.content);
 
         let class = match self.kind {
+            CssTokenKind::AtRules => "keyword",
             CssTokenKind::Comment => "comment",
             CssTokenKind::Function => "function",
             CssTokenKind::Identifier => "identifier",

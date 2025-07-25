@@ -62,7 +62,7 @@ pub static PATTERNS: LazyLock<Vec<(Regex, CssTokenKind)>> = LazyLock::new(|| {
         (CSS_COMMENT.clone(), CssTokenKind::Comment),
         (CSS_WHITESPACE.clone(), CssTokenKind::Whitespace),
         // At-rules
-        (CSS_AT_RULES.clone(), CssTokenKind::Macro),
+        (CSS_AT_RULES.clone(), CssTokenKind::AtRules),
         // String literals, colors, functions
         (CSS_STRING_LITERAL.clone(), CssTokenKind::String),
         (CSS_HEX_COLOR.clone(), CssTokenKind::Literal),

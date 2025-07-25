@@ -55,12 +55,13 @@ macro_rules! assert_fail_skip_whitespace {
     ($code:expr) => {{
         let actual = $crate::CssTokenizer::tokenize($code)
             .into_iter()
-            .filter(|tok| tok.token_type != $crate::TokenType::Whitespace)
+            .filter(|tok| tok.kind != $crate::CssTokenKind::Whitespace)
             .collect::<Vec<_>>();
         assert_eq!(actual, []);
     }};
 }
 
+mod at_rules;
 mod comments;
 mod full;
 mod keywords;
