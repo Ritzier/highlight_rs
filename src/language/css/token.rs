@@ -20,10 +20,14 @@ pub enum CssTokenKind {
     Operator,
     Property,
     Punctuation,
-    Selector,
     String,
     Unit,
     Whitespace,
+    SelectorId,
+    SelectorTag,
+    SelectorClass,
+    SelectorUniversal,
+    SelectorPseudo,
 }
 
 impl CssToken {
@@ -45,10 +49,14 @@ impl CssToken {
             CssTokenKind::Operator => "operator",
             CssTokenKind::Property => "property",
             CssTokenKind::Punctuation => "punctuation",
-            CssTokenKind::Selector => "selector",
             CssTokenKind::String => "string",
             CssTokenKind::Unit => "unit",
             CssTokenKind::Whitespace | CssTokenKind::Default => return content,
+            CssTokenKind::SelectorId => "selector-id",
+            CssTokenKind::SelectorTag => "selector-tag",
+            CssTokenKind::SelectorClass => "selector-class",
+            CssTokenKind::SelectorPseudo => "selector-pseudo",
+            CssTokenKind::SelectorUniversal => "selector-universal",
         };
         format!("<span class=\"{PREFIX}{class}\">{content}</span>")
     }

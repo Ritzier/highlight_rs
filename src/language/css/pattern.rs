@@ -74,14 +74,17 @@ pub static PATTERNS: LazyLock<Vec<(Regex, CssTokenKind)>> = LazyLock::new(|| {
         (CSS_IMPORTANT.clone(), CssTokenKind::Keyword),
         (CSS_KEYWORDS.clone(), CssTokenKind::Keyword),
         (CSS_CUSTOM_PROPERTY.clone(), CssTokenKind::Property),
+        // Selectors (ordered from most to least specific to avoid overlaps)
+        (CSS_SELECTOR_ID.clone(), CssTokenKind::SelectorId),
+        (CSS_SELECTOR_CLASS.clone(), CssTokenKind::SelectorClass),
+        (CSS_SELECTOR_PSEUDO.clone(), CssTokenKind::SelectorPseudo),
+        (
+            CSS_SELECTOR_UNIVERSAL.clone(),
+            CssTokenKind::SelectorUniversal,
+        ),
+        (CSS_SELECTOR_ELEM.clone(), CssTokenKind::SelectorTag),
         // Properties (should come before generic identifiers!)
         (CSS_PROPERTY.clone(), CssTokenKind::Property),
-        // Selectors (ordered from most to least specific to avoid overlaps)
-        (CSS_SELECTOR_ID.clone(), CssTokenKind::Selector),
-        (CSS_SELECTOR_CLASS.clone(), CssTokenKind::Selector),
-        (CSS_SELECTOR_PSEUDO.clone(), CssTokenKind::Selector),
-        (CSS_SELECTOR_UNIVERSAL.clone(), CssTokenKind::Selector),
-        (CSS_SELECTOR_ELEM.clone(), CssTokenKind::Selector),
         // Numbers/Units
         (CSS_NUMBER_WITH_UNIT.clone(), CssTokenKind::Unit),
         (CSS_NUMBER.clone(), CssTokenKind::Number),
