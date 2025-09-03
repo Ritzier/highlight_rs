@@ -1,6 +1,12 @@
 use highlight_rs::Language;
 use leptos::prelude::*;
+use leptos::task::spawn_local;
 use strum::IntoEnumIterator;
+
+#[lazy]
+fn highlight_code(code: String, language: String) -> String {
+    highlight_rs::highlight(&code, &language)
+}
 
 #[component]
 pub fn DemoPage() -> impl IntoView {
@@ -64,10 +70,16 @@ fn EditorView(code: ReadSignal<String>, set_code: WriteSignal<String>) -> impl I
 fn HighlightView(code: ReadSignal<String>, language: ReadSignal<Language>) -> impl IntoView {
     let (inner, set_inner) = signal(String::new());
     Effect::new(move |_| {
-        let result = highlight_rs::highlight(&code.read(), &language.read().to_string());
-        set_inner.set(result);
-    });
+        let code_val = code.get();
+        let lang_val = language.read().to_string();
 
+        if !code_val.is_empty() {
+            spawn_local(async move {
+                let result = highlight_code(code_val, lang_val).await;
+                set_inner.set(result);
+            });
+        }
+    });
     view! {
         <pre class="code">
             <code class="hljs" inner_html=inner></code>
