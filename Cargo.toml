@@ -6,3 +6,8 @@ edition = "2024"
 [dependencies]
 regex = "1.11.1"
 thiserror = "2.0.12"
+strum = { version = "0.27.2", features = ["derive"], optional = true }
+
+[features]
+default = []
+strum = ["dep:strum"]

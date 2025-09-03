@@ -1,5 +1,6 @@
 use std::fmt;
 
+#[cfg_attr(feature = "strum", derive(strum::EnumIter))]
 #[derive(Debug, PartialEq, Clone)]
 pub enum Language {
     Rust,
