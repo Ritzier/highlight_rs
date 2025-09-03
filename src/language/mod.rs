@@ -6,6 +6,9 @@ macro_rules! rg {
     };
 }
 
+mod language;
+pub use language::Language;
+
 mod rust;
 pub use rust::*;
 mod css;
@@ -35,12 +38,6 @@ impl From<CssToken> for HighlightToken {
     fn from(token: CssToken) -> Self {
         HighlightToken::Css(token)
     }
-}
-
-#[derive(Debug, PartialEq)]
-pub enum Language {
-    Rust,
-    Css,
 }
 
 impl Language {
