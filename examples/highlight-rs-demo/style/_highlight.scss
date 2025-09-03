@@ -1,0 +1,48 @@
+@use "sass:color";
+@use "sass:map";
+
+$highlight-map: (
+    "attribute": "green",
+    "char": "peach",
+    "comment": "overlay2",
+    "function": "blue",
+    "identifier": "text",
+    "keyword": "mauve",
+    "lifetime": "lavender",
+    "macro": "red",
+    "number": "peach",
+    "operator": "sky",
+    "punctuation": "subtext1",
+    "string": "green",
+    "tag": "teal",
+    "type": "yellow",
+    "selector-class": "teal",
+    "selector-id": "blue",
+    "selector-pseudo": "teal",
+    "selector-tag": "yellow",
+    "selector-universal": "sapphire",
+    "unit": "red",
+    "literal": "peach",
+    "property": "teal",
+);
+
+$font-style-map: (
+    "comment": italic,
+    "char": bold,
+);
+
+@each $token, $color in $highlight-map {
+    .hl-#{$token} {
+        color: var(--#{$color});
+
+        @if map.has-key($font-style-map, $token) {
+            $style: map.get($font-style-map, $token);
+
+            @if $style == bold {
+                font-weight: bold;
+            } @else if $style == italic {
+                font-style: italic;
+            }
+        }
+    }
+}

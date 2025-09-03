@@ -1,0 +1,53 @@
+[workspace]
+resolver = "2"
+members = ["app", "frontend", "server"]
+
+[profile.wasm-release]
+inherits = "release"
+codegen-units = 1
+lto = true
+opt-level = 'z'
+panic = "abort"
+
+[workspace.dependencies]
+leptos = { version = "0.8" }
+leptos_meta = { version = "0.8" }
+leptos_router = { version = "0.8" }
+leptos_axum = { version = "0.8" }
+
+axum = "0.8"
+tokio = { version = "1", features = ["rt-multi-thread"] }
+wasm-bindgen = "0.2"
+
+console_error_panic_hook = "0.1"
+
+highlight_rs = { path = "../../", features = ["strum"] }
+strum = "0.27.2"
+
+[[workspace.metadata.leptos]]
+name = "leptos-project"
+
+bin-package = "server"
+lib-package = "frontend"
+
+style-file = "style/main.scss"
+
+site-root = "target/site"
+site-pkg-dir = "pkg"
+assets-dir = "public"
+
+site-addr = "127.0.0.1:3000"
+reload-port = 3001
+
+end2end-cmd = "npx playwright test"
+end2end-dir = "end2end"
+
+browserquery = "defaults"
+env = "DEV"
+watch = false
+
+bin-features = ["ssr"]
+bin-default-features = false
+lib-features = ["hydrate"]
+lib-default-features = false
+lib-profile-release = "wasm-release"
