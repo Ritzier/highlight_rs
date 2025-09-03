@@ -133,8 +133,6 @@ The library generates HTML with CSS classes prefixed with `hl-`:
 @use "sass:color";
 @use "sass:map";
 
-@use "sass:map";
-
 $highlight-map: (
   "attribute": "green",
   "char": "peach",
