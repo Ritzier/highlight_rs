@@ -19,8 +19,22 @@ src
 │   │   └── token.rs        # Token structs/enums for Rust
 │   └── rust.rs             # Rust tokenizer engine
 ├── lib.rs                  # Library entrypoint, exports, glue
+├── regex.rs                # Regex abstraction layer
 └── utils.rs                # Utility functions (highlight, html_escape, etc.)
 ```
+
+## Features
+
+This library supports different `regex` backends through feature flags:
+
+### Regex Features
+
+- **`full-regex`** (default) - Uses the full-featured `regex` crate with complete Unicode support and advanced features
+- **`lite-regex`** - Uses the lightweight `regex-lite` crate for smaller binary sizes, ideal for WASM targets
+
+### Other Features
+
+- **`strum`** - Enables enum iteration and additional derive macros for the `Language` enum
 
 ## Getting Started
 
