@@ -21,7 +21,10 @@ wasm-bindgen = "0.2"
 
 console_error_panic_hook = "0.1"
 
-highlight_rs = { path = "../../", features = ["strum"] }
+highlight_rs = { path = "../../", features = [
+  "strum",
+  "lite-regex",
+], default-features = false }
 strum = "0.27.2"
 
 [[workspace.metadata.leptos]]
