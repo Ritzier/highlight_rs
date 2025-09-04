@@ -1,4 +1,4 @@
-use regex::Regex;
+use crate::regex::*;
 
 mod token;
 pub use token::{RustToken, RustTokenKind};

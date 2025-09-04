@@ -1,7 +1,7 @@
-use regex::Regex;
 use std::sync::LazyLock;
 
 use super::CssTokenKind;
+use crate::regex::*;
 
 // --- Comments ---
 pub static CSS_COMMENT: LazyLock<Regex> = rg!(r"/\*[\s\S]*?\*/");

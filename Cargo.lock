@@ -22,6 +22,7 @@ name = "highlight_rs"
 version = "0.1.0"
 dependencies = [
  "regex",
+ "regex-lite",
  "strum",
  "thiserror",
 ]
@@ -72,6 +73,12 @@ dependencies = [
  "memchr",
  "regex-syntax",
 ]
+
+[[package]]
+name = "regex-lite"
+version = "0.1.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "943f41321c63ef1c92fd763bfe054d2668f7f225a5c29f0105903dc2fc04ba30"
 
 [[package]]
 name = "regex-syntax"

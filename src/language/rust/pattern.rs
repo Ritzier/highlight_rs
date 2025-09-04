@@ -1,7 +1,7 @@
-use regex::Regex;
 use std::sync::LazyLock;
 
 use super::RustTokenKind;
+use crate::regex::*;
 
 // --- Comments ---
 pub static COMMENT_LINE: LazyLock<Regex> = rg!(r"//.*");
