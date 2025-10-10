@@ -1,37 +1,76 @@
 use highlight_rs::Language;
 use leptos::prelude::*;
 use leptos::task::spawn_local;
+use leptos_router::{LazyRoute, lazy_route};
 use strum::IntoEnumIterator;
+
+pub struct DemoPage {
+    data: DemoPageData,
+}
+
+struct DemoPageData {
+    language: ReadSignal<Language>,
+    set_language: WriteSignal<Language>,
+    code: ReadSignal<String>,
+    set_code: WriteSignal<String>,
+}
+
+impl Default for DemoPageData {
+    fn default() -> Self {
+        let (language, set_language) = signal(Language::Rust);
+        let (code, set_code) = signal(String::new());
+
+        Self {
+            language,
+            set_language,
+            code,
+            set_code,
+        }
+    }
+}
+
+#[lazy_route]
+impl LazyRoute for DemoPage {
+    fn data() -> Self {
+        Self {
+            data: DemoPageData::default(),
+        }
+    }
+
+    fn view(this: Self) -> AnyView {
+        let DemoPageData {
+            code,
+            set_code,
+            language,
+            set_language,
+        } = this.data;
+
+        view! {
+            <div class="demo">
+                <header>
+                    <span>"Highlight"</span>
+
+                    <SelectLangauage language set_language />
+                </header>
+
+                <main>
+                    <div class="editor">
+                        <EditorView code set_code />
+                    </div>
+
+                    <div class="highlight">
+                        <HighlightView code language />
+                    </div>
+                </main>
+            </div>
+        }
+        .into_any()
+    }
+}
 
 #[lazy]
 fn highlight_code(code: String, language: String) -> String {
     highlight_rs::highlight(&code, &language)
-}
-
-#[component]
-pub fn DemoPage() -> impl IntoView {
-    let (language, set_language) = signal(Language::Rust);
-    let (code, set_code) = signal(String::new());
-
-    view! {
-        <div class="demo">
-            <header>
-                <span>"Highlight"</span>
-
-                <SelectLangauage language set_language />
-            </header>
-
-            <main>
-                <div class="editor">
-                    <EditorView code set_code />
-                </div>
-
-                <div class="highlight">
-                    <HighlightView code language />
-                </div>
-            </main>
-        </div>
-    }
 }
 
 #[component]

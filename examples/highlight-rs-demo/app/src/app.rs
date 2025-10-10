@@ -1,7 +1,7 @@
 use leptos::prelude::*;
 use leptos_meta::provide_meta_context;
 use leptos_router::components::{Route, Router, Routes};
-use leptos_router::path;
+use leptos_router::{Lazy, path};
 
 use crate::pages::*;
 
@@ -12,7 +12,7 @@ pub fn App() -> impl IntoView {
     view! {
         <Router>
             <Routes fallback=|| "Page not found".into_view()>
-                <Route path=path!("") view=DemoPage />
+                <Route path=path!("") view={Lazy::<DemoPage>::new()} />
             </Routes>
         </Router>
     }
